@@ -24,11 +24,20 @@ public class PartyResource {
     @Inject
     PartyService partyService;
 
+    @GET
+    @Path("{id}")
+    public String getParty(String id){
+        return "A party could be here";
+    }
+
+    /*
+    removing, since it's blocking build
     @POST
-    @Produces(MediaType.TEXT_PLAIN)
     public Uni<String> createParty(String name, String org, Multi<User> users, Multi<String> partyItems){
         //TODO: replace .toString with proper stringification
         LOG.trace(String.format("Entered createParty (name=%s; org=%s; users=%s, partyItems=%s)", name, org, users.toString(), partyItems.toString()));
         return partyService.createPartyAsync(name, org, users, partyItems);
     }
+
+     */
 }
