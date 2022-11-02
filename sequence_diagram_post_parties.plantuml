@@ -1,0 +1,22 @@
+@startuml
+skinparam sequenceMessageAlign right
+note over BFF: user is already authenticated and has a JWT \n the user also exists and her org also exists \n (adds more checks to the PartySvc and makes the diagram unreadable :) )
+BFF-> PartySvc: POST /parties
+note over BFF: request params{organisation, name, location, memberList, itemList}
+PartySvc-> AuthorizationMgr: check if user is allowed to modify this org (=modify parties, users)
+AuthorizationMgr->PostgreSQL: check user scope (based on JWT) in Casbin DB
+PartySvc<--AuthorizationMgr: 200 OK
+PartySvc-> PostgreSQL: create Party & Partyitems
+PartySvc-> UserMgmt: assign users to Party
+note over PartySvc: users = list of email addresses
+note over UserMgmt: The users might not be onboarded, yet. But once they are, they will belong to your party.
+UserMgmt-> UserMgmt: check if user exists
+UserMgmt-> SendGrid: If user does not exist, invite them (to this org)
+UserMgmt-> AuthorizationMgr: If user does not exist, assign them a reader rights to this org/party
+UserMgmt->Neo4j: Add party scope
+UserMgmt<--AuthorizationMgr: 200 OK
+PartySvc<--UserMgmt: 200 OK
+BFF<--PartySvc: 200 OK
+note over UserMgmt: Pending optimization: If this request runs too long end-to-end, we can decouple the micro service interaction via async/brokers \n This optimization is omitted in a first version, to stick to the "KISS" principle.
+
+@enduml
