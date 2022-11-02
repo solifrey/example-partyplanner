@@ -161,3 +161,6 @@ Here's my timeboxing approach:
 ## Usage
 
 Running `docker compose up -d` should be all that's required. Just there is not much to run...
+
+## (Planned) Implementation
+![image](sequence_diagram_post_parties.png)
