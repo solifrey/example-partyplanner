@@ -162,5 +162,9 @@ Here's my timeboxing approach:
 
 Running `docker compose up -d` should be all that's required. Just there is not much to run...
 
+In the docker compose, there is still a bug that makes quarkus refuse to build.
+Manually it builds fine:
+` docker build -f be-service-partyplanner/src/main/docker/Dockerfile.jvm -t quarkus/be-service-partyplanner-jvm be-service-partyplanner/.`
+
 ## (Planned) Implementation
 ![image](sequence_diagram_post_parties.png)
